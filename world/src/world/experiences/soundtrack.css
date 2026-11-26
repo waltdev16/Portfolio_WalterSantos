@@ -1,0 +1,410 @@
+/* THE SOUNDTRACK — dark editorial record shop. The turntable stays visible on the right. */
+
+.st {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-experience);
+  pointer-events: none;
+  color: var(--white);
+}
+.st__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(11 11 14 / 0.97) 0, rgb(11 11 14 / 0.94) 50%, rgb(11 11 14 / 0.55) 66%, transparent 80%);
+}
+.st__inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(62vw, 980px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3.4vh, 40px);
+  padding: clamp(22px, 3vh, 34px) clamp(24px, 4vw, 64px) clamp(20px, 3vh, 32px);
+  overflow-y: auto;
+  pointer-events: auto;
+  scrollbar-width: none;
+}
+.st__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-left: 150px; /* clear the corner mark */
+  min-height: 48px;
+}
+.st__kicker {
+  margin: 0;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.14em;
+  color: var(--gray);
+}
+.st__kicker span {
+  margin: 0 6px;
+  color: var(--red-readable);
+}
+
+/* ---------- Feature: one record, large ---------- */
+.st__feature {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+}
+.st__art {
+  position: relative;
+  width: clamp(220px, 24vw, 330px);
+  aspect-ratio: 1;
+  margin-right: clamp(70px, 9vw, 140px); /* room for the vinyl sliding out */
+}
+.st__sleeve {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--gray-900);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 30px 60px rgb(0 0 0 / 0.55),
+    0 0 0 1px rgb(255 255 255 / 0.06);
+}
+.st__vinyl {
+  position: absolute;
+  top: 3%;
+  left: 3%;
+  width: 94%;
+  height: 94%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 31%, rgb(255 255 255 / 0.05) 31.5% 32%, transparent 32.5%),
+    repeating-radial-gradient(circle, #0d0d10 0 1.4px, #19191d 1.8px 2.8px),
+    #0d0d10;
+  box-shadow: 0 20px 40px rgb(0 0 0 / 0.5);
+  transform: translateX(42%);
+}
+.st__vinyl::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 30deg, transparent 0 10%, rgb(255 255 255 / 0.09) 14%, transparent 20% 58%, rgb(255 255 255 / 0.06) 62%, transparent 68%);
+}
+.st__vinyl img {
+  position: absolute;
+  inset: 34%;
+  width: 32%;
+  height: 32%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.st__vinyl.is-spinning img {
+  animation: spin 3.2s linear infinite;
+}
+.st__index {
+  margin: 0 0 14px;
+  font: 500 12px var(--mono);
+  letter-spacing: 0.12em;
+  color: var(--red-readable);
+}
+.st__index span {
+  color: var(--gray);
+}
+.st__detail h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.4vw, 52px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.st__artist {
+  margin: 12px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+}
+.st__year {
+  margin: 4px 0 0;
+  font: 12px var(--mono);
+  letter-spacing: 0.12em;
+  color: var(--gray);
+}
+.st__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+.st__actions a,
+.st__play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgb(245 245 243 / 0.22);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--white);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+.st__actions a:hover,
+.st__play:hover {
+  border-color: var(--white);
+}
+.st__play i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+}
+.st__play.is-on {
+  border-color: var(--red);
+  background: rgb(213 0 28 / 0.12);
+}
+
+/* ---------- Collection: separated, square, scrollable ---------- */
+.st__collection {
+  margin-top: auto;
+}
+.st__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.st__bar p {
+  margin: 0;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.14em;
+}
+.st__bar p span {
+  color: var(--gray);
+}
+.st__arrows {
+  display: flex;
+  gap: 8px;
+}
+.st__arrows button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgb(245 245 243 / 0.2);
+  border-radius: 50%;
+  background: none;
+  color: var(--white);
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    opacity 0.3s ease;
+}
+.st__arrows button svg {
+  width: 16px;
+  height: 16px;
+}
+.st__arrows .is-next svg {
+  rotate: 180deg;
+}
+.st__arrows button:hover:not(:disabled) {
+  border-color: var(--white);
+}
+.st__arrows button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.st__rail {
+  display: flex;
+  gap: clamp(26px, 3vw, 42px);
+  margin: 0;
+  padding: 22px 6px 16px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 6px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.st__rail::-webkit-scrollbar {
+  display: none;
+}
+.st__item {
+  flex: 0 0 clamp(136px, 12vw, 178px);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.st__thumb {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--white);
+  text-align: left;
+  cursor: pointer;
+}
+.st__cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgb(27 27 31 / 0.96), rgb(16 16 19 / 0.98));
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    0 14px 26px rgb(0 0 0 / 0.32);
+  will-change: transform, filter, box-shadow;
+  transition:
+    transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.36s ease,
+    box-shadow 0.42s ease;
+}
+.st__cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.09), transparent 28%, transparent 72%, rgb(0 0 0 / 0.16));
+  pointer-events: none;
+}
+.st__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0);
+  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1), filter 0.36s ease;
+}
+.st__thumb:hover .st__cover,
+.st__thumb:focus-visible .st__cover {
+  transform: translateY(-5px);
+  filter: brightness(1.06);
+  box-shadow: 0 20px 34px rgb(0 0 0 / 0.46);
+}
+.st__thumb:hover .st__cover img,
+.st__thumb:focus-visible .st__cover img {
+  transform: scale(1.018);
+}
+.st__thumb:focus-visible {
+  outline: none;
+}
+.st__thumb:focus-visible .st__cover {
+  outline: 2px solid var(--white);
+  outline-offset: 5px;
+}
+.st__thumb.is-picked .st__cover {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 18px 34px rgb(0 0 0 / 0.4),
+    0 0 0 1px rgb(255 255 255 / 0.02);
+  filter: brightness(1.05);
+}
+.st__thumb.is-picked .st__cover img {
+  transform: scale(1.016);
+}
+.st__now {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 3px 6px;
+  background: var(--red);
+  font: 500 9px var(--mono);
+  letter-spacing: 0.08em;
+}
+.st__thumb strong {
+  display: block;
+  margin-top: 12px;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.st__by {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  font: 11px var(--mono);
+  color: var(--gray);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.st__thumb.is-picked strong {
+  color: var(--white);
+}
+.st__thumb.is-picked .st__by {
+  color: var(--red-readable);
+}
+
+/* ---------- Tablet / phone ---------- */
+@media (max-width: 899px) {
+  .st__shade {
+    background: linear-gradient(to bottom, transparent 0, rgb(11 11 14 / 0.75) 34%, rgb(11 11 14 / 0.97) 44%);
+  }
+  .st__inner {
+    top: 44vh;
+    width: 100%;
+    gap: 22px;
+    padding: 18px 18px 22px;
+  }
+  .st__head {
+    padding-left: 0;
+  }
+  .st__kicker {
+    display: none;
+  }
+  .st__head {
+    min-height: 0;
+  }
+  .st__feature {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 16px;
+  }
+  .st__art {
+    width: 34vw;
+    max-width: 190px;
+    margin-right: 15vw;
+  }
+  .st__detail h2 {
+    font-size: 26px;
+  }
+  .st__artist {
+    font-size: 15px;
+  }
+  .st__actions {
+    margin-top: 14px;
+  }
+  .st__actions a,
+  .st__play {
+    height: 36px;
+    padding: 0 12px;
+  }
+  .st__item {
+    flex-basis: calc(46vw - 18px);
+  }
+  .st__rail {
+    gap: 20px;
+  }
+}
+@media (max-width: 520px) {
+  .st__feature {
+    grid-template-columns: 1fr;
+  }
+}
+
+.st__thumb.is-picked strong { color: var(--white); }
+.st__cover { backface-visibility: hidden; }
+.st__thumb:focus-visible .st__cover { outline: 2px solid var(--white); outline-offset: 5px; }

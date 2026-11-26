@@ -1,0 +1,32 @@
+/* shared — ported from V3, restyled for the garage palette. */
+
+/* ---------- Shared "back to the room" ---------- */
+.xp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px 10px 12px;
+  border: 1px solid rgb(245 245 243 / 0.25);
+  border-radius: 3px;
+  background: var(--night);
+  color: var(--cream);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+}
+.xp-back svg {
+  width: 18px;
+  height: 18px;
+}
+.xp-back:hover {
+  border-color: var(--glow);
+}
+.xp-loading {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-experience);
+  background: rgb(15 15 15 / 0.6);
+}
+
+

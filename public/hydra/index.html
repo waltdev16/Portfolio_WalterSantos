@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>HYDRA 3D</title>
+    <script type="module" crossorigin src="./assets/index-DT1Kk-rM.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BqOZahv_.css">
+  </head>
+  <body>
+    <!-- Terminal de la computadora: firmware, monitor serial y telemetría -->
+    <dialog id="terminal">
+      <header>
+        <strong>HYDRA / Engineering workstation</strong>
+        <button id="close">Cerrar · Esc</button>
+      </header>
+      <div class="panes">
+        <section class="pane">
+          <h3>01 / Firmware original · Arduino C++</h3>
+          <pre id="source"></pre>
+        </section>
+        <section class="pane">
+          <h3>02 / Monitor serial virtual · 9600 baud</h3>
+          <pre id="serial"></pre>
+          <h3>03 / Telemetría simulada</h3>
+          <pre id="status"></pre>
+        </section>
+      </div>
+      <footer>Firmware original de 2025 (solo lectura). La telemetría se calcula en JavaScript; no ejecuta C++ ni recibe datos de hardware. La extensión a cuatro depósitos cierra las compuertas cuando todos están llenos.</footer>
+    </dialog>
+
+    <!-- Tarjeta informativa del componente seleccionado -->
+    <aside id="component-card" hidden aria-live="polite">
+      <button id="component-close" type="button" aria-label="Cerrar ficha">×</button>
+      <strong id="component-title"></strong>
+      <p id="component-description"></p>
+      <p id="component-reading"></p>
+    </aside>
+
+  </body>
+</html>

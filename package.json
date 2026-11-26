@@ -1,0 +1,42 @@
+{
+  "name": "walter-santos-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/build-world.mjs --if-missing",
+    "dev": "next dev",
+    "prebuild": "node scripts/build-world.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "world:dev": "npm --prefix world run dev",
+    "world:build": "node scripts/build-world.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "lucide-react": "^1.75.0",
+    "motion": "^14.14.0",
+    "next": "16.4.6",
+    "ogl": "^1.0.11",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "three": "^0.187.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.187.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

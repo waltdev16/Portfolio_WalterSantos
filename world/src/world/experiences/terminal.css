@@ -1,0 +1,157 @@
+/* terminal — ported from V3, restyled for the garage palette. */
+
+/* ---------- Terminal ---------- */
+.term-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-experience);
+  display: grid;
+  place-items: center;
+  padding: 80px 16px 24px;
+  background: rgb(8 6 7 / 0.55);
+}
+.term {
+  display: flex;
+  flex-direction: column;
+  width: min(780px, 100%);
+  height: min(540px, 100%);
+  border: 1px solid #2a2f36;
+  border-radius: 3px;
+  background: #0d1014;
+  color: #c9d1d9;
+  font: 14px/1.6 "DM Mono", ui-monospace, monospace;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.6),
+    0 40px 100px rgb(0 0 0 / 0.65),
+    0 0 60px rgb(90 150 255 / 0.12);
+  overflow: hidden;
+}
+.term__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #20252c;
+  background: #12161b;
+  color: #8b949e;
+  font-size: 12px;
+}
+.term__dots {
+  display: flex;
+  gap: 6px;
+}
+.term__dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #3a4048;
+}
+.term__dots i:first-child {
+  background: #f5a23c;
+}
+.term__bar button {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  color: #8b949e;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.term__screen {
+  flex: 1;
+  padding: 16px 18px;
+  overflow-y: auto;
+}
+.term__line {
+  margin-bottom: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.term__line p {
+  margin: 0;
+}
+.term__line--sys {
+  color: #6e7681;
+}
+.term__prompt {
+  color: var(--orange);
+}
+.term__hl {
+  color: var(--glow);
+}
+.term__dim {
+  color: #6e7681;
+}
+.term__err {
+  color: #ff7b72;
+}
+.term__n {
+  color: #79c0ff;
+}
+.term__skill {
+  color: #e6edf3;
+  white-space: pre;
+}
+.term__group {
+  margin-bottom: 8px;
+}
+.term__table div {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+}
+.term__table dt {
+  color: #79c0ff;
+}
+.term__table dd {
+  margin: 0;
+  color: #8b949e;
+}
+.term__cmd {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #79c0ff;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.term a {
+  color: #79c0ff;
+}
+.term__input {
+  display: flex;
+  align-items: baseline;
+}
+.term__input input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: #e6edf3;
+  font: inherit;
+  caret-color: var(--amber);
+  outline: none;
+}
+.term__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid #20252c;
+}
+.term__chips button {
+  padding: 5px 10px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  background: #161b22;
+  color: #c9d1d9;
+  font: 12px "DM Mono", monospace;
+  cursor: pointer;
+}
+.term__chips button:hover {
+  border-color: var(--amber);
+}
+
+

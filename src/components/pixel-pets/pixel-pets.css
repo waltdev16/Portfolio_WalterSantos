@@ -1,0 +1,145 @@
+/* Estilos de la repisa y las mascotas. */
+/* ---------- pixel pets ---------- */
+.pet-shelf {
+  --pet-size: 40px;
+  position: relative;
+  width: clamp(240px, 31vw, 480px);
+  height: calc(var(--pet-size) + 30px);
+  pointer-events: none;
+}
+.pet-shelf__stage {
+  position: absolute;
+  inset: 0 0 2px 0;
+}
+/* the shelf: a fine silver line with small geometric ends and a slow sheen */
+.pet-shelf__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  background:
+    linear-gradient(90deg, transparent 0 0, rgb(168 181 199 / 0.55) 6%, rgb(226 232 240 / 0.7) 50%, rgb(168 181 199 / 0.55) 94%, transparent),
+    rgb(168 181 199 / 0.2);
+  background-size: 100% 100%;
+  overflow: visible;
+}
+.pet-shelf__line::before,
+.pet-shelf__line::after {
+  content: "";
+  position: absolute;
+  top: -2.5px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgb(168 181 199 / 0.6);
+  transform: rotate(45deg);
+}
+.pet-shelf__line::before {
+  left: -3px;
+}
+.pet-shelf__line::after {
+  right: -3px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pet-shelf__line {
+    background-image:
+      linear-gradient(100deg, transparent 40%, rgb(255 255 255 / 0.55) 50%, transparent 60%),
+      linear-gradient(90deg, transparent, rgb(168 181 199 / 0.55) 6%, rgb(226 232 240 / 0.7) 50%, rgb(168 181 199 / 0.55) 94%, transparent);
+    background-size: 35% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    animation: shelf-sheen 9s ease-in-out infinite;
+  }
+}
+@keyframes shelf-sheen {
+  0%,
+  55% {
+    background-position: -60% 0, 0 0;
+  }
+  100% {
+    background-position: 160% 0, 0 0;
+  }
+}
+
+.pixel-pet {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--pet-size);
+  height: var(--pet-size);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.pixel-pet:focus-visible {
+  outline: 1px dashed rgb(226 232 240 / 0.6);
+  outline-offset: 3px;
+}
+.pixel-pet__body {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pixel-pet[data-dir="left"] .pixel-pet__body {
+  transform: scaleX(-1);
+}
+.pixel-pet__sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+.pixel-pet[data-pet="null"] .pixel-pet__sprite {
+  opacity: 0.92;
+}
+
+.pixel-pet__bubble,
+.pixel-pet__name {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translate(-50%, 4px);
+  white-space: nowrap;
+  font: 500 10px/1 var(--font-jetbrains), ui-monospace, monospace;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.pixel-pet__bubble {
+  padding: 4px 6px;
+  border: 1px solid rgb(168 181 199 / 0.28);
+  border-radius: 3px;
+  background: rgb(8 11 16 / 0.85);
+  color: #e2e8f0;
+}
+.pixel-pet__bubble::before {
+  content: "> ";
+  color: var(--fluor, #c6f432);
+}
+.pixel-pet__name {
+  color: rgb(144 153 168);
+}
+.pixel-pet__bubble[data-show="true"],
+.pixel-pet__name[data-show="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+/* when the bubble is up, the name moves out of its way */
+.pixel-pet__bubble[data-show="true"] ~ .pixel-pet__name {
+  opacity: 0;
+}
+
+@media (max-width: 639px) {
+  .pet-shelf {
+    --pet-size: 30px;
+    width: min(78vw, 300px);
+  }
+  .pixel-pet__bubble,
+  .pixel-pet__name {
+    font-size: 9px;
+  }
+}

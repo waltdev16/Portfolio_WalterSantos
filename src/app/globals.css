@@ -1,0 +1,835 @@
+/* Estilos globales: tokens de color y tipografía (Tailwind 4), utilidades propias y estilos de la intro, el Hero y Walter's World. */
+
+@import "tailwindcss";
+
+/* Ventanas con poca altura (navegador con pestañas, barra de direcciones y marcadores).
+   Solo desde 640 px de ancho: los teléfonos en vertical no se ven afectados.
+   Uso: short:py-20  /  shorter:mb-8 */
+@custom-variant short (@media (max-height: 800px) and (min-width: 640px));
+@custom-variant shorter (@media (max-height: 680px) and (min-width: 640px));
+
+/* ───────────────────────────────────────────────
+   Editorial Engineering — design tokens
+   Semantic colors live in CSS variables so a section
+   can switch to the light "paper" theme with one class.
+   ─────────────────────────────────────────────── */
+
+:root {
+  --ink-950: #080b10;
+  --ink-900: #10151d;
+  --ink-850: #151b24;
+  --ink-line: #293241;
+  --fog-50: #f2f4f7;
+  --fog-400: #9099a8;
+  /* fluorescent green accent — used sparingly (~10%) */
+  --fluor: #c6f432;
+  /* Walter's World only: the creative area's own colour */
+  --world: #ff6a1f;
+  --world-hi: #ff9a45;
+  --signal: var(--fluor);
+  --signal-2: #e2fb8f;
+
+  --paper: #e8ebef;
+  --paper-2: #dde1e7;
+  --paper-ink: #080b10;
+  --paper-muted: #48515f;
+  --paper-line: #b9c0ca;
+  /* on light paper the fluor green is too pale for text: a deep olive of the same hue */
+  --paper-signal: #4a6a00;
+
+  /* active theme (dark by default) */
+  --bg: var(--ink-950);
+  --bg-2: var(--ink-900);
+  --surface: var(--ink-850);
+  --fg: var(--fog-50);
+  --muted: var(--fog-400);
+  --line: var(--ink-line);
+  --accent: var(--signal);
+  --accent-2: var(--signal-2);
+  --grid-line: rgb(242 244 247 / 0.045);
+
+  color-scheme: dark;
+}
+
+.theme-paper {
+  --bg: var(--paper);
+  --bg-2: var(--paper-2);
+  --surface: #f4f6f8;
+  --fg: var(--paper-ink);
+  --muted: var(--paper-muted);
+  --line: var(--paper-line);
+  --accent: var(--paper-signal);
+  --accent-2: #2f4400;
+  --grid-line: rgb(8 11 16 / 0.06);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-ink: var(--ink-950);
+  --color-fluor: var(--fluor);
+  --color-fog: var(--fog-50);
+
+  --font-display: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-blueprint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--fluor);
+    color: var(--ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .type-section {
+    font-family: var(--font-space), ui-sans-serif, sans-serif;
+    font-weight: 600;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    /* el tamaño sigue al ancho, pero no supera el 14 % de la altura visible */
+    font-size: clamp(2.6rem, min(8vw, 14svh), 6.5rem);
+  }
+
+  .type-label {
+    font-family: var(--font-jetbrains), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  /* Blueprint grid surface */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: -1px -1px;
+  }
+
+  /* Hatched fill used for anything still pending */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in oklab, var(--muted) 18%, transparent) 0 1px,
+      transparent 1px 9px
+    );
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in oklab, var(--fg) 55%, transparent);
+  }
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: caret 1s steps(1) infinite;
+}
+
+
+/* Horizontal galleries keep native scrolling but hide the bar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Credential dialog entrance */
+.credential-dialog[open] {
+  animation: dialog-in 0.45s var(--ease-blueprint);
+}
+.credential-dialog[open]::backdrop {
+  animation: backdrop-in 0.45s ease-out;
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   Card entrance (credential carousel) — pure CSS
+   ─────────────────────────────────────────────── */
+@keyframes intro-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+}
+.intro {
+  animation: intro-up 0.8s var(--ease-blueprint) both;
+  animation-delay: var(--d, 0s);
+}
+
+/* ───────────────────────────────────────────────
+   Blur highlight (About intro) — one pass, ~800 ms.
+   Driven by RevealObserver; visible without JS.
+   ─────────────────────────────────────────────── */
+.js-reveal [data-reveal="blur"] .bh-w {
+  display: inline-block;
+  transition:
+    opacity 0.55s var(--ease-blueprint),
+    filter 0.55s var(--ease-blueprint),
+    transform 0.55s var(--ease-blueprint);
+  transition-delay: calc(var(--i) * var(--step, 6ms));
+}
+.js-reveal [data-reveal="blur"]:not([data-shown]) .bh-w {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translate3d(0, 0.15em, 0);
+}
+.bh-mark {
+  color: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(var(--fluor), var(--fluor));
+  background-repeat: no-repeat;
+  background-position: 0 90%;
+  background-size: 100% 0.34em;
+}
+.js-reveal .bh-mark {
+  transition: background-size 0.6s var(--ease-blueprint) 0.55s;
+}
+.js-reveal [data-reveal="blur"]:not([data-shown]) .bh-mark {
+  background-size: 0% 0.34em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal="blur"] .bh-w {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   Music — FlexCarousel (React Bits) theme overrides.
+   The vendored CSS stays untouched; these only align
+   type and focus styles with the portfolio.
+   ─────────────────────────────────────────────── */
+.music-carousel {
+  color: var(--fg);
+}
+/* no highlighted frame around the carousel (it still takes focus for ← →) */
+.flex-carousel.music-carousel:focus,
+.flex-carousel.music-carousel:focus-visible {
+  box-shadow: none;
+  outline: none;
+}
+.music-carousel .flex-carousel__title {
+  font-family: var(--font-space), ui-sans-serif, sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.music-carousel .flex-carousel__subtitle {
+  font-family: var(--font-inter), ui-sans-serif, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-top: 2px;
+}
+.music-carousel .flex-carousel__count {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* ───────────────────────────────────────────────
+   Hero — particle portrait
+   ─────────────────────────────────────────────── */
+.hero-ambient {
+  background:
+    radial-gradient(ellipse 34% 46% at 50% 38%, rgb(150 170 200 / 0.07), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgb(198 244 50 / 0.025), transparent 70%);
+}
+
+.hero-name {
+  margin: 0;
+  will-change: transform, opacity, filter;
+  font-family: var(--font-editorial), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  /* "Walter Santos" measures 4.93 em; with the tight tracking 19.4vw fills ~88% of the width */
+  /* limitado también por la altura: en ventanas bajas deja sitio a mascotas, texto y botón */
+  font-size: min(19.4vw, calc((100svh - 250px) * 0.95));
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+  color: var(--fog-50);
+  white-space: nowrap;
+  text-align: center;
+  will-change: transform, opacity;
+}
+@media (max-width: 639px) {
+  .hero-name {
+    /* two lines on phones: "Santos" is 2.41 em */
+    font-size: 35vw;
+    line-height: 0.84;
+    white-space: normal;
+  }
+  .hero-name__gap {
+    display: block;
+    height: 0;
+  }
+}
+
+@layer components {
+.hero-meta {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--fog-50);
+}
+.hero-meta span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fog-400);
+}
+.hero-meta em {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fog-400);
+}
+
+}
+
+.hero-statement {
+  font-size: clamp(14px, 1.05vw, 17px);
+  line-height: 1.55;
+  color: rgb(242 244 247 / 0.78);
+  text-wrap: pretty;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 2.75rem;
+  padding: 0 0.4rem 0 1.15rem;
+  border: 1px solid rgb(242 244 247 / 0.28);
+  border-radius: 999px;
+  font-size: 14px;
+  color: var(--fog-50);
+  white-space: nowrap;
+  transition:
+    border-color 0.3s var(--ease-blueprint),
+    background-color 0.3s var(--ease-blueprint);
+}
+.hero-cta:hover {
+  border-color: rgb(242 244 247 / 0.7);
+  background: rgb(242 244 247 / 0.04);
+}
+.hero-cta__icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(242 244 247 / 0.28);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.hero-cta__icon svg {
+  animation: hero-arrow 2.2s var(--ease-blueprint) infinite;
+}
+.hero-cta:hover .hero-cta__icon {
+  border-color: var(--fluor);
+  color: var(--fluor);
+}
+@keyframes hero-arrow {
+  0%,
+  35% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  55% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+  56% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta__icon svg {
+    animation: none;
+  }
+}
+
+/* the home nav appears at the end of the hero entrance */
+.nav-intro {
+  animation: nav-intro 0.9s var(--ease-blueprint) 1.45s both;
+}
+@keyframes nav-intro {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-intro {
+    animation: none;
+  }
+}
+
+
+/* ---------- cinematic intro ---------- */
+html[data-intro] {
+  overflow: hidden;
+}
+/* while the intro plays, the site is a viewport-sized layer the 3D scene projects onto the laptop */
+html[data-intro] #site {
+  position: fixed;
+  inset: 0;
+  height: 100svh;
+  overflow: hidden;
+  transform-origin: 0 0;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+html[data-intro="play"] #site {
+  visibility: hidden;
+}
+html[data-intro="play"] .nav-intro {
+  animation-play-state: paused;
+}
+.intro-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #08090d;
+  transition: opacity 0.45s var(--ease-blueprint);
+}
+.intro-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.intro-stage[data-fading] {
+  opacity: 0;
+}
+.intro-skip {
+  position: fixed;
+  right: max(1.25rem, 3vw);
+  bottom: max(1.25rem, 2.2vw);
+  z-index: 210;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgb(226 232 240 / 0.16);
+  border-radius: 999px;
+  background: rgb(8 9 13 / 0.35);
+  backdrop-filter: blur(6px);
+  color: rgb(226 232 240 / 0.7);
+  font: 500 0.75rem/1 var(--font-inter), system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  animation: intro-skip-in 0.6s ease 0.8s forwards;
+  transition: color 0.2s, border-color 0.2s, opacity 0.3s;
+}
+.intro-skip:hover,
+.intro-skip:focus-visible {
+  color: #e2e8f0;
+  border-color: rgb(226 232 240 / 0.4);
+}
+.intro-skip:not([data-visible]) {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+@keyframes intro-skip-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Walter's World (creative area) ---------- */
+@layer components {
+  /* warm garage-lamp orange; same height and type as the Projects button */
+  .world-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffa25a 0%, #f47a2a 55%, #e8641a 100%);
+    color: #1d0d03;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow:
+      0 0 0 1px rgb(255 190 140 / 0.45) inset,
+      0 6px 20px -10px rgb(255 120 40 / 0.85);
+    transition:
+      transform 0.2s var(--ease-blueprint),
+      box-shadow 0.45s var(--ease-blueprint);
+  }
+  .world-btn--sm {
+    height: 2.25rem;
+    padding: 0 0.95rem;
+    font-size: 13px;
+  }
+  .world-btn--md {
+    height: 2.75rem;
+    padding: 0 1.2rem;
+    font-size: 14px;
+  }
+  .world-btn--lg {
+    height: 3.25rem;
+    padding: 0 1.5rem;
+    font-size: 15px;
+  }
+  .world-btn__label,
+  .world-btn__arrow,
+  .world-btn__spark {
+    position: relative;
+    z-index: 1;
+  }
+  /* hover: light spreads from the little lamp across the button */
+  .world-btn__light {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(120% 140% at 12% 50%, rgb(255 236 210 / 0.75), rgb(255 200 150 / 0.25) 45%, transparent 70%);
+    opacity: 0;
+    transform: translateX(-55%);
+    transition:
+      opacity 0.5s var(--ease-blueprint),
+      transform 0.7s var(--ease-blueprint);
+  }
+  .world-btn:hover .world-btn__light,
+  .world-btn:focus-visible .world-btn__light {
+    opacity: 0.6;
+    transform: none;
+  }
+  .world-btn:hover,
+  .world-btn:focus-visible {
+    box-shadow:
+      0 0 0 1px rgb(255 214 180 / 0.6) inset,
+      0 8px 26px -8px rgb(255 120 40 / 0.95);
+  }
+  .world-btn:active {
+    transform: scale(0.96);
+  }
+  .world-btn:focus-visible {
+    outline: 2px solid #ffa25a;
+    outline-offset: 3px;
+  }
+  .world-btn__spark {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-radius: 50%;
+    background: #fff5e8;
+    box-shadow: 0 0 6px 1px rgb(255 245 232 / 0.9);
+  }
+  .world-btn__arrow {
+    flex: none;
+    transition: transform 0.3s var(--ease-blueprint);
+  }
+  .world-btn:hover .world-btn__arrow {
+    transform: translateX(2px);
+  }
+  /* phase 1 of the portal: pulse and lean forward */
+  .world-btn[data-portal="active"] {
+    animation: world-pulse 0.7s ease-out;
+  }
+  .world-btn[data-portal="active"] .world-btn__arrow {
+    transform: translateX(5px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .world-btn__spark {
+      animation: world-spark 2.4s ease-in-out infinite;
+    }
+  }
+}
+@keyframes world-spark {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.7);
+  }
+}
+@keyframes world-pulse {
+  from {
+    box-shadow:
+      0 0 0 1px rgb(255 214 180 / 0.6) inset,
+      0 0 0 0 rgb(255 138 61 / 0.7);
+  }
+  to {
+    box-shadow:
+      0 0 0 1px rgb(255 214 180 / 0.6) inset,
+      0 0 0 18px rgb(255 138 61 / 0);
+  }
+}
+
+/* ---------- the portal to and from Walter's World ---------- */
+.world-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  pointer-events: auto; /* no double clicks while it runs */
+}
+.world-portal__disc {
+  position: absolute;
+  inset: 0;
+  background: #0b0b0e; /* the World's own black */
+  clip-path: circle(0px at var(--x) var(--y));
+}
+.world-portal.is-full .world-portal__disc {
+  clip-path: none;
+}
+.world-portal__rim {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border-radius: 50%;
+  border: 1.5px solid rgb(255 170 100 / 0.85);
+  box-shadow:
+    0 0 36px 6px rgb(255 120 40 / 0.35),
+    inset 0 0 50px 8px rgb(255 120 40 / 0.22);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+html[data-portal="out"] #site {
+  pointer-events: none;
+}
+/* back from the World: the page stays in the World's colour until the portal opens */
+html[data-portal="cover"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: #0b0b0e;
+}
+
+.world-teaser__frame {
+  position: absolute;
+  inset: 5rem 2.5rem;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid rgb(255 106 31 / 0.25);
+}
+.world-teaser__art {
+  object-fit: cover;
+  object-position: 50% 45%;
+  transition: transform 1.2s var(--ease-blueprint);
+}
+.world-teaser:hover .world-teaser__art {
+  transform: scale(1.03);
+}
+.world-teaser__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(8 11 16 / 0.92) 0%, rgb(8 11 16 / 0.65) 38%, rgb(8 11 16 / 0.05) 75%),
+    linear-gradient(0deg, rgb(8 11 16 / 0.55), transparent 45%);
+}
+.world-teaser__copy {
+  position: relative;
+  max-width: 34rem;
+  padding: clamp(3rem, min(9vw, 12svh), 8rem) clamp(1.5rem, 4vw, 4rem);
+}
+.world-teaser__label {
+  color: var(--world-hi);
+  font: 500 11px/1 var(--font-jetbrains), ui-monospace, monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.world-teaser__title {
+  margin-top: 1rem;
+  font-family: var(--font-editorial), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.2rem, min(8vw, 13svh), 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--fog-50);
+}
+.world-teaser__text {
+  margin-top: 1.1rem;
+  max-width: 26rem;
+  color: rgb(226 232 240 / 0.78);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+@media (max-width: 639px) {
+  .world-teaser__frame {
+    inset: 5rem 1.25rem;
+  }
+  .world-teaser__shade {
+    background: linear-gradient(0deg, rgb(8 11 16 / 0.95) 0%, rgb(8 11 16 / 0.7) 55%, rgb(8 11 16 / 0.25) 100%);
+  }
+}
+
+/* ---------- language ---------- */
+/* stored Spanish: keep the page hidden for the instant between hydration and the switch */
+html[data-lang="es"]:not([data-lang-ready]) body {
+  visibility: hidden;
+}
+.lang-switch__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding: 0 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #9099a8;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.lang-switch__btn:hover,
+.lang-switch__btn:focus-visible,
+.lang-switch[data-open] .lang-switch__btn {
+  color: var(--fog-50);
+  border-color: #293241;
+  background: rgb(27 34 48 / 0.6);
+}
+.lang-switch__chevron {
+  opacity: 0.7;
+  transition: transform 0.25s;
+}
+.lang-switch[data-open] .lang-switch__chevron {
+  transform: rotate(180deg);
+}
+.lang-switch__menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  min-width: 10rem;
+  padding: 0.3rem;
+  border: 1px solid #293241;
+  border-radius: 0.9rem;
+  background: rgb(16 21 29 / 0.96);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 40px -14px rgb(0 0 0 / 0.8);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 0.2s,
+    transform 0.25s var(--ease-blueprint),
+    visibility 0s linear 0.25s;
+}
+.lang-switch[data-open] .lang-switch__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.2s,
+    transform 0.25s var(--ease-blueprint);
+}
+.lang-switch__menu button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.4rem;
+  padding: 0 0.75rem;
+  border-radius: 0.6rem;
+  color: #c6ccd6;
+  font-size: 13px;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+.lang-switch__menu button:hover {
+  background: #1b2230;
+  color: var(--fog-50);
+}
+.lang-switch__menu button[aria-pressed="true"] {
+  color: var(--fog-50);
+}
+.lang-switch__tick {
+  display: inline-grid;
+  width: 1rem;
+  color: var(--fluor);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-switch__menu,
+  .lang-switch[data-open] .lang-switch__menu {
+    transition: none;
+  }
+}
+
+/* El contenido del Hero participa en el flujo en ventanas bajas o con zoom alto. */
+@media (max-height: 680px) {
+  .hero { height: auto; min-height: 100svh; }
+  .hero .hero-content { position: relative; padding-top: 15rem; }
+}
+/* Un control enfocado permanece legible mientras el Hero se desvanece al hacer scroll. */
+.hero-content:focus-within > div { opacity: 1 !important; }
