@@ -722,9 +722,30 @@ export const projects: Project[] = [
       }
     ],
 
-    files: [],
-
-    repository: null,
+    files: [
+      {
+        label: "Next.js / React",
+        href: "https://github.com/waltdev16/Portfolio_WalterSantos/tree/main/src",
+      },
+      {
+        label: "Walter's World",
+        href: "https://github.com/waltdev16/Portfolio_WalterSantos/tree/main/world",
+      },
+      {
+        label: "Contact API",
+        href: "https://github.com/waltdev16/Portfolio_WalterSantos/blob/main/src/app/api/contact/route.ts",
+      },
+      {
+        label: "package.json",
+        href: "https://github.com/waltdev16/Portfolio_WalterSantos/blob/main/package.json",
+      },
+      {
+        label: "ZIP (.zip)",
+        href: "https://github.com/waltdev16/Portfolio_WalterSantos/archive/refs/heads/main.zip",
+      },
+    ],
+    
+    repository: "https://github.com/waltdev16/Portfolio_WalterSantos",
     demo: null,
 
     // Aprendizajes
