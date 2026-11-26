@@ -27,7 +27,7 @@ if (process.argv.includes("--if-missing") && existsSync(join(target, "index.html
 
 // 03. Dependencias (instalación reproducible con el package-lock.json de ./world)
 if (!existsSync(join(world, "node_modules"))) {
-  execSync("npm ci", { cwd: world, stdio: "inherit" });
+  execSync("npm ci --include=dev", { cwd: world, stdio: "inherit" });
 }
 
 // 04. Compilación y copia
